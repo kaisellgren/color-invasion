@@ -1,0 +1,5 @@
+name: color_invasion
+description: The colors are invading!
+dependencies:
+  browser: any
+  polymer: any

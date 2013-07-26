@@ -1,0 +1,25 @@
+html, body {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  margin: 0;
+  line-height: 48px;
+}
+
+nav {
+  background: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  height: 48px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+
+canvas {
+  position: absolute;
+  top: 48px;
+  left: 0;
+}

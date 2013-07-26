@@ -1,0 +1,1 @@
+dart2js web/index.dart -o web/index.dart.js
