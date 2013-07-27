@@ -6,11 +6,27 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <nav>
-    <h1>Color Invasion</h1>
-  </nav>
+  <template id="app" bind>
+    <template bind if="{{ isRoomsView }}">
+      <h1>Rooms</h1>
 
-  <canvas></canvas>
+      <ul>
+        <template repeat="{{ rooms }}">
+          <li>
+            {{ name }} (#{{ id }}), max {{ players }} players
+          </li>
+        </template>
+      </ul>
+    </template>
+
+    <template bind if="{{ isGameView }}">
+      <nav>
+        <h1>Color Invasion</h1>
+      </nav>
+
+      <canvas></canvas>
+    </template>
+  </template>
 
   <script type="application/dart" src="index.dart"></script>
   <script src="packages/browser/dart.js"></script>

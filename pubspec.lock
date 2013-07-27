@@ -65,7 +65,3 @@ packages:
     description: unittest
     source: hosted
     version: "0.6.5"
-  vector_math:
-    description: vector_math
-    source: hosted
-    version: "1.3.5"

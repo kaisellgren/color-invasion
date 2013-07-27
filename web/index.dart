@@ -1,6 +1,9 @@
 import 'dart:html';
 import 'package:color_invasion/client.dart';
+import 'package:mdv/mdv.dart' as mdv;
 
 main() {
-  var game = new Game(canvas: query('canvas'));
+  mdv.initialize();
+
+  new App();
 }

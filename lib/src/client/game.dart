@@ -7,9 +7,11 @@ class Game {
   List<Entity> entities = [];
 
   // Settings.
-  int blockSize = 48; // Excluding borders.
+  int blockSize = 48;
 
-  Game({this.canvas}) {
+  Game() {
+    canvas = query('canvas');
+
     resizeCanvas();
 
     renderer = new Renderer(game: this);
