@@ -3,8 +3,10 @@ part of color_invasion.client;
 class App {
   WebSocket connection = new WebSocket('ws://${window.location.host}/');
   List<Room> rooms = toObservable([]);
+  Room room;
+  List<Player> players = toObservable([]);
 
-  String view = 'rooms'; // TODO: Maybe enums.
+  @observable String view = 'rooms'; // TODO: Maybe enums.
 
   int lastRequestId = 0;
   Map<int, Completer> requestCompleters = {};
@@ -12,7 +14,10 @@ class App {
   App() {
     query('#app').model = this;
 
-    connection.onOpen.listen((_) => findRooms());
+    connection.onOpen.listen((_) {
+      joinRoom(id: 1);
+      //findRooms();
+    });
 
     connection.onClose.listen((_) {print('connection raped');});
 
@@ -24,14 +29,35 @@ class App {
 
   bool get isRoomsView => view == 'rooms';
   bool get isGameView => view == 'game';
+  bool get isLobbyView => view == 'lobby';
+
+  start() {
+    print('y');
+  }
 
   findRooms() {
     sendRequest({'action': 'findRooms'}).then((response) {
       response.forEach((r) {
         rooms.add(new Room.fromMap(r));
       });
+    });
+  }
 
-      print(rooms);
+  findPlayers() {
+    sendRequest({'action': 'findPlayers'}).then((response) {
+      print(response);
+      players.clear();
+      response.forEach((r) {
+        players.add(new Player.fromMap(r));
+      });
+    });
+  }
+
+  joinRoom({int id}) {
+    sendRequest({'action': 'joinRoom', 'id': id}).then((response) {
+      view = 'lobby';
+
+      findPlayers();
     });
   }
 

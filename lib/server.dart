@@ -8,13 +8,11 @@ import 'package:logging/logging.dart';
 
 import 'shared.dart';
 
-part 'src/server/player_info.dart';
-
 // Tyrion: Where's the God of tits and wine?
 
 class Server {
   List<Room> rooms = [];
-  Map<WebSocketConnection, PlayerInfo> players = {};
+  Map<WebSocketConnection, Player> players = {};
   Logger logger = new Logger('color-invasion');
 
   Server() {
@@ -52,7 +50,7 @@ class Server {
   }
 
   handleNewWebSocketConnection(WebSocket connection) {
-    players[connection] = new PlayerInfo();
+    players[connection] = new Player();
 
     connection.done.catchError((e) {
       logger.severe('Problem with WebSocket connection: $e');
@@ -68,6 +66,16 @@ class Server {
         var response = {};
         response['id'] = data['id'];
         response['data'] = findRooms();
+        connection.add(json.stringify(response));
+      } else if (data['action'] == 'joinRoom') {
+        var response = {};
+        response['id'] = data['id'];
+        response['data'] = joinRoom(id: data['id'], player: players[connection]);
+        connection.add(json.stringify(response));
+      } else if (data['action'] == 'findPlayers') {
+        var response = {};
+        response['id'] = data['id'];
+        response['data'] = findPlayers();
         connection.add(json.stringify(response));
       }
     }, onDone: () {
@@ -85,5 +93,19 @@ class Server {
   /**
    * Finds all rooms.
    */
-  List<Room> findRooms() => rooms; // lol...
+  List<Room> findRooms() => rooms; // lol... later we add logic here, checks for if room is already playing or full, etc.
+
+  List<Player> findPlayers() {
+    var l = [];
+
+    players.forEach((connection, player) => l.add(player));
+
+    return l;
+  }
+
+  bool joinRoom({int id, Player player}) {
+    player.room = rooms.firstWhere((room) => room.id == id);
+
+    return true;
+  }
 }

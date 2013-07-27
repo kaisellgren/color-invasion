@@ -7,6 +7,8 @@
 </head>
 <body>
   <template id="app" bind>
+    {{ view }}
+    {{ players.length }}
     <template bind if="{{ isRoomsView }}">
       <h1>Rooms</h1>
 
@@ -17,6 +19,22 @@
           </li>
         </template>
       </ul>
+    </template>
+
+    <template bind if="{{ isLobbyView }}">
+      <h1>Lobby #{{ room.id }} ({{ room.name }}</h1>
+
+      <h2>Players:</h2>
+      <ul>
+        <template repeat="{{ players }}">
+          <li>
+            {{ name }}
+          </li>
+        </template>
+      </ul>
+
+      <button on-click="findPlayers()">Refresh player list</button>
+      <button on-click="start()">Start playing!</button>
     </template>
 
     <template bind if="{{ isGameView }}">
