@@ -1,21 +1,39 @@
 part of color_invasion.client;
 
-class App {
+class App extends ObservableBase {
   WebSocket connection = new WebSocket('ws://${window.location.host}/');
   List<Room> rooms = toObservable([]);
   Room room;
   List<Player> players = toObservable([]);
 
-  @observable String view = 'rooms'; // TODO: Maybe enums.
+  var _displayRoomsView = 'block';
+  String get displayRoomsView => _displayRoomsView;
+  set displayRoomsView(String value) {
+    _displayRoomsView = notifyPropertyChange(const Symbol('displayRoomsView'), _displayRoomsView, value);
+  }
+
+  var _displayLobbyView = 'none';
+  String get displayLobbyView => _displayLobbyView;
+  set displayLobbyView(String value) {
+    _displayLobbyView = notifyPropertyChange(const Symbol('displayLobbyView'), _displayLobbyView, value);
+  }
+
+  var _displayGameView = 'none';
+  String get displayGameView => _displayGameView;
+  set displayGameView(String value) {
+    v = notifyPropertyChange(const Symbol('displayGameView'), _displayGameView, value);
+  }
 
   int lastRequestId = 0;
   Map<int, Completer> requestCompleters = {};
 
   App() {
+    mdv.initialize();
+
     query('#app').model = this;
 
     connection.onOpen.listen((_) {
-      joinRoom(id: 1);
+      joinRoom(id: 1); // For fast dev, let's join a room immediately (server created it already).
       //findRooms();
     });
 
@@ -26,10 +44,6 @@ class App {
       requestCompleters[data['id']].complete(data['data']);
     });
   }
-
-  bool get isRoomsView => view == 'rooms';
-  bool get isGameView => view == 'game';
-  bool get isLobbyView => view == 'lobby';
 
   start() {
     print('y');
@@ -45,7 +59,6 @@ class App {
 
   findPlayers() {
     sendRequest({'action': 'findPlayers'}).then((response) {
-      print(response);
       players.clear();
       response.forEach((r) {
         players.add(new Player.fromMap(r));
@@ -55,7 +68,10 @@ class App {
 
   joinRoom({int id}) {
     sendRequest({'action': 'joinRoom', 'id': id}).then((response) {
-      view = 'lobby';
+      print('Joined room #$id!');
+
+      displayRoomsView = 'none';
+      displayLobbyView = 'block';
 
       findPlayers();
     });

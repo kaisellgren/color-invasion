@@ -3,6 +3,8 @@ library color_invasion.client;
 import 'dart:async';
 import 'dart:html';
 import 'dart:json' as json;
+import 'package:polymer/polymer.dart';
+import 'package:mdv/mdv.dart' as mdv;
 import 'package:observe/observe.dart';
 import 'dart:math';
 

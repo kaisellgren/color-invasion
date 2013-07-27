@@ -7,9 +7,7 @@
 </head>
 <body>
   <template id="app" bind>
-    {{ view }}
-    {{ players.length }}
-    <template bind if="{{ isRoomsView }}">
+    <div style="display: {{ displayRoomsView }}">
       <h1>Rooms</h1>
 
       <ul>
@@ -19,9 +17,9 @@
           </li>
         </template>
       </ul>
-    </template>
+    </div>
 
-    <template bind if="{{ isLobbyView }}">
+    <div style="display: {{ displayLobbyView }}">
       <h1>Lobby #{{ room.id }} ({{ room.name }}</h1>
 
       <h2>Players:</h2>
@@ -35,15 +33,15 @@
 
       <button on-click="findPlayers()">Refresh player list</button>
       <button on-click="start()">Start playing!</button>
-    </template>
+    </div>
 
-    <template bind if="{{ isGameView }}">
+    <div style="display: {{ displayGameView }}">
       <nav>
         <h1>Color Invasion</h1>
       </nav>
 
       <canvas></canvas>
-    </template>
+    </div>
   </template>
 
   <script type="application/dart" src="index.dart"></script>
