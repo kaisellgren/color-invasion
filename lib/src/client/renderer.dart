@@ -4,10 +4,12 @@ class Renderer {
   Game game;
   CanvasRenderingContext2D context;
   String entityColor;
+  var colors = ["#33FF33", "#00CCCC", "#0000CC", "#CC0000", "#FF6600", 
+                "#E7EDA3", "#01669C", "#00A67F", "#263A79", "#902F4E"];
   
   Renderer({this.game}) {
     // Set up the draw loop.
-    entityColor = '#'+(new Random().nextInt(100)*0xFFFFFF<<0).toString().substring(0,6);
+    entityColor = colors[new Random().nextInt(10)];
     window.animationFrame.then(draw);
 
     context = game.canvas.context2d;
