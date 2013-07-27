@@ -3,9 +3,11 @@ part of color_invasion.client;
 class Renderer {
   Game game;
   CanvasRenderingContext2D context;
-
+  String entityColor;
+  
   Renderer({this.game}) {
     // Set up the draw loop.
+    entityColor = '#'+(new Random().nextInt(100)*0xFFFFFF<<0).toString().substring(0,6);
     window.animationFrame.then(draw);
 
     context = game.canvas.context2d;
@@ -39,7 +41,7 @@ class Renderer {
 
   void drawEntities() {
     game.entities.forEach((Entity entity) {
-      context.fillStyle = '#e90';
+      context.fillStyle = entityColor;
       context.fillRect(entity.position.x * game.blockSize, entity.position.y * game.blockSize, game.blockSize, game.blockSize);
     });
   }
